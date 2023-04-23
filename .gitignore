@@ -1,0 +1,7 @@
+*.DS_Store
+.idea*
+venv*
+doctr*
+actual_data*
+models/*
+data/*
