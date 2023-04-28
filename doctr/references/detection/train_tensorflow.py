@@ -90,6 +90,7 @@ def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=Fals
     train_iter = iter(train_loader)
     # Iterate over the batches of the dataset
     for batch_idx, (images, targets) in enumerate(train_iter):
+        print(batch_idx)
         images = batch_transforms(images)
 
         with tf.GradientTape() as tape:
