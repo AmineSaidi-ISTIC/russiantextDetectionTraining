@@ -101,8 +101,8 @@ def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=Fals
                 grads = optimizer.get_unscaled_gradients(grads)
             optimizer.apply_gradients(zip(grads, model.trainable_weights))
         except Exception as e:
-            print(e.message)
             print(batch_idx)
+            print(e.message)
 
             
         
