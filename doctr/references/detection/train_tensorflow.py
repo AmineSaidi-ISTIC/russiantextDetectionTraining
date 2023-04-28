@@ -326,6 +326,7 @@ def main(args):
     # Training loop
     mb = range(args.epochs)
     for epoch in mb:
+        print('epoch : ' + str(epoch))
         fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, args.amp)
         # Validation loop at the end of each epoch
         val_loss, recall, precision, mean_iou = evaluate(model, val_loader, batch_transforms, val_metric)
