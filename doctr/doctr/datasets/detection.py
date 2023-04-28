@@ -67,4 +67,5 @@ class DetectionDataset(AbstractDataset):
                 geoms = polygons if use_polygons else np.concatenate((polygons.min(axis=1), polygons.max(axis=1)), axis=1)
 
                 self.data.append((img_name, np.asarray(geoms, dtype=np_dtype)))
+        print(self.data)
             
