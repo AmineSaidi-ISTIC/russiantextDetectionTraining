@@ -91,16 +91,21 @@ def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=Fals
     print(train_iter)
     # Iterate over the batches of the dataset
     for batch_idx, (images, targets) in enumerate(train_iter):
-        print(batch_idx)
-        images = batch_transforms(images)
+        try:
+            images = batch_transforms(images)
 
-        with tf.GradientTape() as tape:
-            train_loss = model(images, targets, training=True)["loss"]
-        grads = tape.gradient(train_loss, model.trainable_weights)
-        if amp:
-            grads = optimizer.get_unscaled_gradients(grads)
-        optimizer.apply_gradients(zip(grads, model.trainable_weights))
+            with tf.GradientTape() as tape:
+                train_loss = model(images, targets, training=True)["loss"]
+            grads = tape.gradient(train_loss, model.trainable_weights)
+            if amp:
+                grads = optimizer.get_unscaled_gradients(grads)
+            optimizer.apply_gradients(zip(grads, model.trainable_weights))
+        except Exception as e:
+            print(e.message)
+            print(batch_idx)
 
+            
+        
         # mb.child.comment = f"Training loss: {train_loss.numpy():.6}"
 
 
