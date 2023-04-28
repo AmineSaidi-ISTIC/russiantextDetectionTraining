@@ -174,9 +174,9 @@ def main(args):
         use_polygons=args.rotation and not args.eval_straight,
     )
 
-    from pprint import pprint
-    pprint(dir(val_set))
-    print(type(val_set))
+#     from pprint import pprint
+#     pprint(dir(val_set))
+#     print(type(val_set))
     val_loader = DataLoader(
         val_set,
         batch_size=args.batch_size,
