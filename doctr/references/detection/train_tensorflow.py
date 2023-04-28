@@ -89,7 +89,7 @@ def record_lr(
 def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=False):
     train_iter = iter(train_loader)
     # Iterate over the batches of the dataset
-    for images, targets in progress_bar(train_iter, parent=mb):
+    for batch_idx, (images, targets) in enumerate(train_iter):
         images = batch_transforms(images)
 
         with tf.GradientTape() as tape:
@@ -99,7 +99,7 @@ def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=Fals
             grads = optimizer.get_unscaled_gradients(grads)
         optimizer.apply_gradients(zip(grads, model.trainable_weights))
 
-        mb.child.comment = f"Training loss: {train_loss.numpy():.6}"
+        # mb.child.comment = f"Training loss: {train_loss.numpy():.6}"
 
 
 def evaluate(model, val_loader, batch_transforms, val_metric):
@@ -165,6 +165,10 @@ def main(args):
         ),
         use_polygons=args.rotation and not args.eval_straight,
     )
+
+    from pprint import pprint
+    pprint(dir(val_set))
+    print(type(val_set))
     val_loader = DataLoader(
         val_set,
         batch_size=args.batch_size,
@@ -186,11 +190,12 @@ def main(args):
     )
 
     # Load doctr model
+    
     model = detection.__dict__[args.arch](
         pretrained=args.pretrained,
         input_shape=(args.input_size, args.input_size, 3),
         assume_straight_pages=not args.rotation,
-        class_names=val_set.class_names,
+        # class_names=val_set.class_names,
     )
 
     # Resume weights
@@ -318,7 +323,7 @@ def main(args):
     min_loss = np.inf
 
     # Training loop
-    mb = master_bar(range(args.epochs))
+    mb = range(args.epochs)
     for epoch in mb:
         fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, args.amp)
         # Validation loop at the end of each epoch
@@ -332,7 +337,7 @@ def main(args):
             log_msg += "(Undefined metric value, caused by empty GTs or predictions)"
         else:
             log_msg += f"(Recall: {recall:.2%} | Precision: {precision:.2%} | Mean IoU: {mean_iou:.2%})"
-        mb.write(log_msg)
+        print(log_msg)
         # W&B
         if args.wb:
             wandb.log(
