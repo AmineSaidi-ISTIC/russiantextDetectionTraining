@@ -208,6 +208,8 @@ def main(args):
     batch_transforms = Normalize(mean=(0.798, 0.785, 0.772), std=(0.264, 0.2749, 0.287))
 
     # Load doctr model
+    print('dsqqsddqsdsqd')
+    print(args.arch)
     model = detection.__dict__[args.arch](pretrained=args.pretrained, assume_straight_pages=not args.rotation)
 
     # Resume weights
