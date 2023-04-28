@@ -88,6 +88,7 @@ def record_lr(
 
 def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=False):
     train_iter = iter(train_loader)
+    print(train_iter)
     # Iterate over the batches of the dataset
     for batch_idx, (images, targets) in enumerate(train_iter):
         print(batch_idx)
