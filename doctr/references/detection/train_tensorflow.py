@@ -91,6 +91,7 @@ def fit_one_epoch(model, train_loader, batch_transforms, optimizer, mb, amp=Fals
     print(train_iter)
     # Iterate over the batches of the dataset
     for batch_idx, (images, targets) in enumerate(train_iter):
+        print(batch_idx)
         try:
             images = batch_transforms(images)
 
