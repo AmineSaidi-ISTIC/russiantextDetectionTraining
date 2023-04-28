@@ -60,8 +60,11 @@ class DetectionDataset(AbstractDataset):
             # File existence check
             if not os.path.exists(os.path.join(self.root, img_name)):
                 raise FileNotFoundError(f"unable to locate {os.path.join(self.root, img_name)}")
+                
+            filename, file_extension = os.path.splitext(img_name)
+            if file_extension.lower() != '.bmp':
+                polygons = np.asarray(label['polygons'], dtype=np_dtype)
+                geoms = polygons if use_polygons else np.concatenate((polygons.min(axis=1), polygons.max(axis=1)), axis=1)
 
-            polygons = np.asarray(label['polygons'], dtype=np_dtype)
-            geoms = polygons if use_polygons else np.concatenate((polygons.min(axis=1), polygons.max(axis=1)), axis=1)
-
-            self.data.append((img_name, np.asarray(geoms, dtype=np_dtype)))
+                self.data.append((img_name, np.asarray(geoms, dtype=np_dtype)))
+            
