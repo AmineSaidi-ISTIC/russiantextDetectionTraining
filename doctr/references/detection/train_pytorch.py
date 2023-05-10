@@ -169,9 +169,9 @@ def evaluate(model, val_loader, batch_transforms, val_metric, amp=False):
 
 
 def main(args):
-
+    print('test here')
     print(args)
-
+    print(args.rotation)  
     if not isinstance(args.workers, int):
         args.workers = min(16, mp.cpu_count())
 
