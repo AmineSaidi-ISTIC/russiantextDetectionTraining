@@ -178,6 +178,7 @@ def main(args):
     torch.backends.cudnn.benchmark = True
 
     st = time.time()
+    print(args.val_path)
     val_set = DetectionDataset(
         img_folder=os.path.join(args.val_path, 'images'),
         label_path=os.path.join(args.val_path, 'labels.json'),
